@@ -1,0 +1,31 @@
+İnventories — Ansible server tərəfindən idarəetmə üçün müraciət etdiyi klientlərin siyahısını özündə cəmləşdirən faylıdır. Default olaraq invertory faylının yeri “/etc/ansible/hosts” olaraq təyin olunmuşdur. Lakin istəyə görə əlavə bir və ya bir neçə inventory faylları yaradıb ayrı-ayrılıqda istifadə etmək mümkündür. Bunun üçün ansible işə salınan zaman “-i” açarından istifadə etməklə invertory faylın yerini göstərmək:
+
+# ansible -i inv.ini appeservers -m ping
+
+və ya ansible.cfg konfiqurasiya faylında default inventory faylının yerini əvəzləmək olar. Normalda ise calisdigin direktoriyada bidene inventory.txt fayli yaradib orda qeyd ede bilersen:
+
+#cat inventory.txt
+target-1 ansible_host=192.168.24.11 ansible_ssh_pass=root
+192.168.24.11
+
+access.ansible.az
+
+[appservers]
+app1.ansible.az
+app2.ansible.az
+
+[dbservers]
+db[4:10].ansible.az
+
+[main-servers]
+appservers
+dbservers
+
+
+Qeyd olunan nümunəyə nəzər salaq və idarəetmə üçün müraciət olunacaq klientlərin siyahısına aydınlıq gətirək:
+
+    192.168.24.11 — klientin ipv4 addresi
+    access.ansible.az — digər bir klientin host adı(“/etc/hosts” faylında müvafiq ip address qeyd olunmalı və ya “/etc/resolv.conf” faylında uyğun dns ad göstərilməlidir)
+    [appservers] — [ ] çərçivələri vasitəsilə klient qrupları ayrılmışdır. Bu nümunədə “appservers” qrupu qeyd olunub ki, onun da daxilində app1.ansible.az və app2.ansible.az klient hostları mövcuddur. Qruplaşdırma imkan verir ki, qrupa daxil olan hər serverdə eyni vaxtda hər hansı əməliyyat aparılsın.
+    db[4:10].ansible.az — bu halda [ ] çərçivələri ardıcıl host adlarının qısaldılmış formada qeyd olunmasında istifadə olunub. Nəzər yetirdiyimiz nümunədə db4.ansible.az — db10.ansible.az(ilk və sonuncu daxil olmaqla) adlı klientlər aralığı nəzərdə tutulur.
+    [main-servers] — bu nümunəmizdə isə qrupların qrupu anlayışına nəzər salacayıq. Yuxarıda qeyd olunan “appservers” və “dbservers” qruplarının özlərini də qruplaşdırmaq mümkündür ki, nümunəmizdə həmin qruplar [main-servers] qrupunda cəmlənmişdir.

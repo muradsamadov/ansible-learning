@@ -1,0 +1,24 @@
+Add-hoc — Ümumiyyətlə ansible tapşırıqları 2 formada icra edir, ad-hoc komanda və ya playbook vasitəsilə. Ad-hoc komandaların üstün cəhəti ondan ibarətdir ki, cli vasitəsilə lazım olan məlumatların əldə olunması və ya cəld şəkildə konfiqurasiyaların aparılmasına imkan verir. Ad-hoc komandalar ilə idarəetmə üçün 2 parametr mütləqdir:
+
+    host və ya qrup adı (inventory faylda qeyd olunmuş)
+    modul
+
+Nümunə üçün sadə,lakin bir o qədər də vacib olan ad-hoc komandaya nəzər salaq:
+
+Nümunə üçün sadə,lakin bir o qədər də vacib olan ad-hoc komandaya nəzər salaq:
+
+#ansible target-1 -m ping -i inventory.txt  
+target-1 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+
+Qeyd olunan add-hoc komanda vasitəsilə, inventory faylında öncədən qeyd etdiyimiz “client1” hostuna “ping”(-m modul parametri üçün açardır) modulu vasitəsilə qoşulma imkanımızın olduğunu yoxlayırıq.
+
+Ümumiyyətlə ad-hoc komandaları 3 kateqoriyaya bölmək olar:
+
+    Operational commands(Əməliyyat komandaları) — bu tip komandalar klient hostlarda logların analiz edilməsi, servislərin start, stop edilməsi və ya statusunun yoxlanılması, prosesslərin monitorinqi və s. cəld icra olunmalı məqsədlər üçün istifadə edilir.
+    İnformational commands(İnformasiya komandaları) — bu tip komandalar klient hostdan informasiyalar əldə edilməsi üçün, məs. install olunmuş paketin versiyasının təyin edilməsi, sistem parametrlərinin təyin edilməsi(operativ yaddaş həcmi, disk həcmi) və s. məqsədlər üçün istifadə edilir.
+    Research commands(Araşdırma komandaları) — bu tip komandalar testləşdirmə məqsədləri üçün, məs. yeni bir modulun yoxlanılması üçün istifadə olunur.
+
+Ad-hoc və playbook icraetmə arasındakı əsas fərqlərə nəzər salaq ad-hoc ansible komandası, playbook isə ansible-playbook komandası vasitəsilə icra olunur. Ad-hoc birdəfəlik tapşırıqlar üçün, playbook isə daha geniş təyinatlı, dövrü tapşırıqlar üçün effektivdir.
