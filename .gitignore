@@ -11,6 +11,4 @@
 
 pkg/
 src/
-Ansible Beginner/Conditionals/*
-file
-test/
+Ansible Beginner/Conditionals/
