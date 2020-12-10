@@ -22,3 +22,6 @@ Qeyd olunan add-hoc komanda vasitəsilə, inventory faylında öncədən qeyd et
     Research commands(Araşdırma komandaları) — bu tip komandalar testləşdirmə məqsədləri üçün, məs. yeni bir modulun yoxlanılması üçün istifadə olunur.
 
 Ad-hoc və playbook icraetmə arasındakı əsas fərqlərə nəzər salaq ad-hoc ansible komandası, playbook isə ansible-playbook komandası vasitəsilə icra olunur. Ad-hoc birdəfəlik tapşırıqlar üçün, playbook isə daha geniş təyinatlı, dövrü tapşırıqlar üçün effektivdir.
+
+
+# sudo ansible all -m setup -i inventory.txt  --bu komanda ile klient hostlarda olan butun datalari tapmaq olar, budaki ansiblede conditionals da ve s. olan melumatlarda bize komeklik edecek

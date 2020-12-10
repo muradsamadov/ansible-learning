@@ -1,0 +1,15 @@
+- name: Install packages with loop
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: install packages "with_items"  # with_items de qeyd olunanlari install edir
+      yum:
+        name: "{{ item }}"  # asagida qeyd olunan with_items de qeyd olunan toollari install edir ve "{{ item }}" kimi qeyd edirik. Sebeb ise bu item gedib cixir with_items de axtaris edir ve orada ne yazilibsa onlari install edir
+        state: latest
+      with_items:  # with_items ile gedir birinci lsof u yukleyir ve isini bitirenden sonra tekrar gelir nano nu yukleyir. Beleliklede loop-a dusmus olur.
+        - lsof
+        - nano 
+        - vim
+      when: ansible_distribution == "CentOS"
+      ignore_errors: yes  # bu komanda ise misalcun hansisa paket ola bilerki artiq hemin vmde var ve bu eger orda yukluduse evvelceden error verecek ve play dayanacaq. Bu halda bu komanda onu skip edir

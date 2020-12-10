@@ -1,0 +1,34 @@
+Plays, Playbooks — Daha öncə qeyd etdiyimiz kimi, playbook, ad-hoc komandalar kimi tapşırıqların icrası üçün istifadə olunan vasitədir. Bəs play nədir? Playbook daxilində bir və ya bir neçə tapşırığ ola bilər ki, bu tapşırıqların hər biri “Play” adlanır. Play-lər bir qayda olaraq YAML formatında yazılır. Hər bir play admin tərəfindən dəyişən-spesifikasiyalı parametrlər ilə yaradılır. Sadə dildə desək “play standarti” anlayışı yoxdur, hər bir play tamam fərqli parametr və təyinatlar üçün yaradıla bilər. Playbook isə öz növbəsində, avtomatlaşdırma üçün istifadə olunan skriptləri özündə birləşdirən vahid blokdur. Modulların dəstəklənməsi playbookları daha da çevik və istifadəyə rahat edir. Faylların idaərçiliyi(file, copy, archive, unarchive, get_url), istifadəçilərin idarəçiliyi(user,group), daemonların idarəçiliyi (service), paketlərin idarəçiliyi (yum) və s. bir sıra əsas modullar playbook-larda çox geniş istifadə olunur. Play və Playbooklar haqqında daha ətraflı məlumat üçün praktiki nümunəyə nəzər salaq. 
+
+Tapşırıq :
+
+    Hər iki klient hosta lokal idarəedici serverdə yeləşən “\home\ansible\ilkfayl”(bu faylı özümüz yaradırıq)faylı, klient serverlərin hər birində “\tmp\” direktoriyasına kopyalanmalı
+    “client1” hostda son versiya “httpd” paketi quraşdırılmalıdır.
+
+Yaratdığımız “play.yml” adlı faylımıza nəzər salaq:
+
+Qeyd: play.yml fayli "Ansible Play,Playbooks/Example-1" direktoriyanin daxilindedir.
+
+Nümunəmizdəki YAML “ — -” işarəsi ilə başlayır. Əgər siz YAML formatlı sənədi direktivlər ilə başlayırsa o zaman mütləq sənəd “ — -” ilə başlamalıdır. Dirketivlər YAML processoruna müraciət üçün instruksiyalardır və ssenari daxilində yazılır. Play “-” işarəsi ilə başlayır. Bu işərə onun playbookdakı pozisiyasını təyin edir. Ümumiyyətlə parametrlərin düzülüşündə “boşluqlar”-a xüsusi diqqət yetirmək lazımdır ki, ardıcıllıq pozulmasın. Əks halda playbook başa düşülməyəcək və icra zamanı xəta verəcək.
+
+    “- name” parametri vasitəsilə ilk Play üçün ad təyin olunur. Bu hissədə adın təyin olunması “optional” parametrdir və mütləq hesab olunmur. Play birbaşa “hosts:” parametrindən də başlanıla bilərdi. Nümunəsi növbəti Play-də göstərilmişdir.
+    “hosts:” parametrində tapşırığı icra etmək istədiyimiz host və ya qrup adları qeyd olunur ki, bizim vəziyətimizdə bu parametrdə “clients” qrupu göstərilməlidir.
+    “tasks:” Play üçün ümumi parametrləri təyin etdikdən sonra artıq tapşırıqları qeyd etmək olar. tasks parametri tapşırıqların başlanılmasının göstəricisidir. Artıq həmin parametrdən sonra qeyd olunacaqlar “task:” boşluğunu sol tərəfə keçməmək şərtilə yazılmalıdır. Bir daha qeyd edim ki, boşluqlara xüsusi diqqət etmək lazımdır.
+    “- name” vasitəsilə tapşırığımız üçün ad təyin edirik.
+    “copy:” faylın kopyalanması üçün istifadə edəcəyimiz moduldur
+    “src:” parametri kopyalanacaq(lokal) faylın başlanğıc yerini göstərir
+    “dest:” parametri kopyalanan faylın təyinat yerini göstərir(klient hostda)
+
+Birinci play haqda bu qədər. Haqqında danışdığımız play, lokal idarəedici serverimizdəki faylımızı klient hostlara kopyalayacaq.
+
+Playbookdakı növbəti Play-a nəzər salsaq, daha öncə qeyd edildiyi kimi, nümunə üçün artıq burada ad təyin etmirik, birbaşa hosts parametrini əlavə edirik və client1 hostunda icranı təyin edirik.
+
+    “become:” parametri tapşırıqların yerinə yetirilməsi üçün müraciət etdiyimiz klient hostda istifadəçi privlegiyalarının dəyişdirilməsi (sudo, su, pfexec, doas, pbrun, dzdo, ksu) üçün istifadə olunan parametrdir. Sadə desək, klient host-da root adından hər hansı əməliyyatı yerinə yetirmək üçün bu parametr təyin olunur.QEYD: Nəzərə almaq lazımdır ki, ansible ilə işlədiyiniz istifadəçinin klient hostda root privlegiyalarını şifrəsiz əldə etmək icazəsi olsun. Bunu təmin etməyin bir neçə üsulu var. Məs, klient hostda root vasitəsilə “/etc/sudoers” faylına root adından çıxış etməyini istadədiyiniz istifadəçinin adını əlavə etməklə nail ola bilərsiniz. Hazırki praktikamızda bu “ansible” istifadəçisidir ki, klient hostda konfiqurasiya faylında bunları qeyd edirəm:
+
+ansible ALL=(ALL) NOPASSWD: ALL
+
+Növbəti parametrlər(tasks,name) haqda daha öncə açıqlama verdik. Digər parametrlərə nəzər salaq:
+
+    “yum:” paketlərin yüklənməsi üçün istifadə olunan moduldur
+    “-name” bu hissədəki “name” parametri, daha öncə qeyd elədiyimiz name parametri ilə eyni təyinatlı deyil, tamamilə başqa təyinat üçün nəzərdə tutulub və modulun yükləyəcəyi paketin adını təyin edir. Parametr mütləqdir.
+    “state:” yüklənəcək paketin statusunu təyin edir. “latest” qiyməti httpd paketinin son distributivinin yüklənməsi tələbini tapşırıq olaraq təyin edir. Bu parametrə digər qiymətlər də təyin etmək olar.

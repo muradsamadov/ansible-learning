@@ -1,0 +1,4 @@
+Ansible conditionals ile numuneleri "Conditionals" direktoriyasinda olan "Example-1" ve "Example-2" dir-da gostermisem. 
+
+Conditionals da "when" komandasindan istifade olunurki misalcun, sen nese servis yukleye bilersen ve isteyersenki yalniz Centos VMlerin bu icra olunsun. 
+

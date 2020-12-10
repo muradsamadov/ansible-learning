@@ -1,0 +1,28 @@
+- name: Condational Examples
+  hosts: all
+  tasks:
+
+    - name: Install the latest version of Apache for CentOS
+      yum:
+        name: httpd
+        state: latest
+      when: ansible_distribution == "CentOS"  # when komandasi ile qeyd olunan "Install the latest version of Apache for CentOS" taskini yalniz CentOS vmlerine icra edecek
+
+    - name: Start service httpd, if not started
+      service:
+        name: httpd
+        state: started
+      when: ansible_distribution == "CentOS"
+
+    - name: Install apache httpd for Ubuntu
+      apt:
+        name: apache2
+        state: present
+      when: ansible_distribution == "Ubuntu" # when komandasi ile qeyd olunan "Install the latest version of Apache for Ubuntu" taskini yalniz CentOS vmlerine icra edecek
+
+    - name: Start service httpd, if not started
+      service:
+        name: apache2
+        state: started
+      when: ansible_distribution == "Ubuntu"
+    

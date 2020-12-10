@@ -1,0 +1,19 @@
+- name: Install packages with loop
+  hosts: all
+  become: yes
+  vars:
+    users:
+      - username: client1
+        description: Client1 User
+      - username: client2
+        description: Client2 User
+
+  tasks:
+    - name: create users with loop
+      user:
+        name: "{{ item.username }}"  # yenede item gedir asagi gorurki orda loop var ve loopa ve gorurki orda item olaraq users daxil edilib. Bu halda users variables kimi yuxarida qeyd olunub. Oradada username ve description daxil edilib. Ona gorede username ve descriptionu vars in altindan goturur 
+        comment: "{{ item.description }}" 
+        state: present
+      loop: "{{ users }}"
+      when: ansible_distribution == "CentOS"
+      ignore_errors: yes  # bu komanda ise misalcun hansisa paket ola bilerki artiq hemin vmde var ve bu eger orda yukluduse evvelceden error verecek ve play dayanacaq. Bu halda bu komanda onu skip edir

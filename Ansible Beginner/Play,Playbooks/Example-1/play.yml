@@ -1,0 +1,15 @@
+- name: First Play
+  hosts: clients
+  tasks: 
+    - name: copy files to clients
+      copy:
+        src: /home/murad/Desktop/play.txt
+        dest: /tmp/
+
+- hosts: target-1
+  become: yes
+  tasks:
+    - name: install apache on target-1
+      yum:
+        name: httpd
+        state: latest
