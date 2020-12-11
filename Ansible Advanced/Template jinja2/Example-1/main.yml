@@ -1,0 +1,21 @@
+- name: Templata jinja2 examples
+  hosts: target-1
+  become: yes
+  vars:
+    source_dir: /home/murad/Downloads/IT/development-codes/ansible/Ansible Advanced/Template jinja2/Example-1
+    dest_dir: /var/www/html
+  tasks:
+    - name: Install the latest version of Apache
+      yum:
+        name: httpd
+        state: latest
+
+    - name: jinja template test
+      template:
+        src: "{{ source_dir }}/index.j2"
+        dest: "{{ dest_dir }}/index.html"
+        
+    - name: apache restart
+      service:
+        name: httpd
+        state: restarted

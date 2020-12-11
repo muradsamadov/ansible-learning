@@ -1,0 +1,14 @@
+- name: Templata jinja2 examples
+  hosts: target-1
+  vars:
+    env: staging
+  tasks:
+    - name: Template file into remote hosts
+      template:
+        src: my_app.conf.j2
+        dest: /etc/my_app.conf
+        owner: murad
+        group: project
+        mode: 0775
+      become: true
+
