@@ -1,0 +1,14 @@
+- name: Create DocumentRoot directory
+  file:
+    path: /var/www/html/test.local
+    state: directory
+
+- copy:
+    src: test.local.conf
+    dest: "{{ dest_config }}"
+
+- template:
+    src: index.j2
+    dest: "{{ dest_html }}"
+
+  notify: restart_httpd

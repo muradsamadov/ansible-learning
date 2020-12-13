@@ -1,0 +1,2 @@
+dest_config: /etc/httpd/conf.d/test.local.conf
+dest_html: /var/www/html/test.local/index.html

@@ -1,0 +1,23 @@
+1. Strategy linear - default olaraq ansible playbook Strategy linear olaraq istifade edir. Bu o demekdirki misalcun sen bir taski 5 hostda run edeceksen. Bu halda misalcun 1ci  task her hostdan icra olunmadan diger taska kecilmir.
+
+2. Strategy Free - misalcun 5 host var 3 icra olunacaq 3 taskin var. Bu halda tasklar her hosta gore ayri ayriliqda icra olunur yeniki bir host diger hostun taskin bitmesini gozlemir:
+
+- name: Apache install
+  strategy: free
+  hosts: target-1
+  roles:
+    - apache_install
+
+3. Serial - misalcun senin playbookda hosts olaraq 5 dene clientin var. Bu halda ele ede bilersenki playbook ilk novdebe ilk 3 hostda icra olunsun ve kecsin 3-3 olaraq diger hostlara:
+
+- name: Apache install
+  serial: 3
+  hosts: target-1
+  roles:
+    - apache_install
+
+4. Forks - Default olaraq ansible fork=5 dir. Fork o demekdir ki, sen hostsda nece clientin varsa o ilk novbede ilk 5 clientde playbooku icra edecek. Bu default forku deyismek ucun ansiblede config ayarlari deyismek lazimdir:
+
+#vim ansible.conf
+forks = 10
+

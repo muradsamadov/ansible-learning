@@ -1,0 +1,4 @@
+- name: Apache install
+  hosts: target-1
+  roles:
+    - apache_install

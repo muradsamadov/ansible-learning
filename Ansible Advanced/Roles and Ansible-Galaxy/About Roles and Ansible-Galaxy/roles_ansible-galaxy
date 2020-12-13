@@ -1,0 +1,37 @@
+Roles — Ansible-da role anlayışının çox sadə açıqlaması var: Təyinatları fərqli, lakin bir biri ilə əlaqəli olan tapşırıqları(tasks) və həmin tapşırıqları təşkil edən şablonlar(templates), fayllar(files), icraedicilər(handlers), dəyişənlər(vars) və s. bir araya gətirərək, onların qarşılıqlı icrasını təmin edən bir mexanizmdir. Role vasitəsilə playbook-u bir neçə məntiqi komponentə bölmək mümkündür. Bu mexanizm daha çətin tapşırıqlar toplusunun icrasını asanlaşdırır. Hər bir role ümumilikdə bir funksionalın icrasını təmin etmək və ya qarşıya qoyulan məqsədə çatmaq üçün tələb olunan tapşırıqlar(task) ardıcıllığını özündə birləşdirir. Role-lar birbaşa olaraq playbook-lar daxilində istifadə oluna bilir və konkret olaraq parametr qiymətinə malik deyillər. Role, həmçinin konfiqurasiya şablonlarının daha asanlıqla paylaşılmasına şərait yaradır. Role-lar aşağıda göstərildiyi kimi xüsusi bir kataloq strukturuna malik olur:
+
+apache_install/
+├── defaults
+│   └── main.yml
+├── files
+│   └── test.local.conf
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   ├── config.yml
+│   ├── install.yml
+│   └── main.yml
+├── templates
+│   └── index.j2
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+Role icrası üçün qeyd olunan strukturdakı direktoriyalardan ən azı biri mövcud olması mütləqdir. Direktoriyaların əksəriyyəti “main.yml” adlı yaml faylına malik olmalıdır. Ansible bu faylların(main.yml) hər birini oxuyaraq kataloqa müraciət nöqtəsi kimi istifadə edir. Role-da istifadə olunmayacaq direktoriyaların mövcud olması vacib deyildir.
+
+    Tasks — Tasks anlayışı ilə daha öncədən tanışıq. Role daxilində ayrıca tasks direktoriyası mövcuddur ki, role tərəfindən icra olunacaq tapşırıqların siyahısını özündə cəmləşdirir. Role-un icrası üçün bir neçə fərqli təyinatlı playbook, tasks direktoriyasında yerləşdirilə və main.yml vasitəsilə həmin tapşırıqlara müraciət oluna bilər. Praktiki nümunədə bu yanaşmaya aydınlıq gətirəcəyik.
+    Vars — Role icrası üçün istifadə olunan dəyişənləri özündə birləşdirir. Role-da istifadə olunacaq dəyişənlər təyin etmək üçün “inventory” faylı və ya “defaults” direktoriyası ilə yanaşı “vars” direktoriyasından da istifadə oluna bilər. Bu direktoriyanın üstünlüyü ondan ibarətdir ki, role icrası zamanı dəyişənlərə müraciət olunarkən bu direktoriyada təyin olunan dəyişənlər digər üsullarla təyin olunan dəyişənlərdən(group_vars, host_vars, defaults və s.) daha yüksək prioritetə malik olurlar. Yalnız playbook-un icrası zamanı “CLİ” vasitəsilə təyin olunan dəyişənlər, bu kataloqdakı dəyişənlərdən üstün ola bilər.
+    Defaults — Role icrası üçün təyin olunan default dəyişənləri özündə birləşdirir. Lakin bu direktoriyada təyin olunan dəyişənlər, vars direktoriyası təşkil etdiyi dəyişənlərə nisbətən daha aşağı prioritetə malikdirlər. Daha sadə desək, əgər digər konfiqurasiyaların heç birində dəyişənlər qeyd olunmayıbsa, role icrası zamanı bu direktoriyadakı dəyişənlərə müraciət olunacaqdır.
+    Files, Templates — Hər iki direktoriya demək olar ki, eyni məqsədə xidmət edir və role icrası zamanı istfadə olunacaq faylları və ya şablonları özündə birləşdirir. Fərq ondan ibarətdir ki, birində standart kopyalanma üçün fayllar cəmləşir(Files), digərində isə şablon əsasında yaradılaraq kopyalanacaq fayllar(Templates). Qovluqların müsbət cəhəti ondan ibarətdir ki, role işə düşərkən qovluqları oxuyur və tapşırıqda istifadə olunacaq faylların yerini göstərmək üçün faylın bütün yolunu(file location) göstərməyə ehtiyac qalmır. Məsələn, daha öncə jinja şablonlardan istifadə edərkən, onlara müraciət zamanı faylın bütün ünvanını göstərirdiksə, role-da buna ehtiyac qalmır, jinja şablon faylının adını qeyd etmək kifayətdir ki, role icra zamanı həmin faylı “templates” direktoriyasında axtarıb tapır(role daxilindəki direktoriyalarda olmayan, kənar fayllara müraciət imkanı da paralel olaraq mövcuddur).
+    Handlers — Role yerinə yetirilərkən icraçılara müraciət zamanı bu direktoriyadan istifadə olunur. İcraçılar haqqında daha öncəki paylaşımlarda danışmışdıq. Məsələn role icrası klient hostda servis quraşdırıb konfiqurasiya edir, dəyişikliklər bitdikdən sonra servisi restart etmək üçün handler-ə müraciət edir ki, bu zaman role tələb olunan handler üçün bu direktoriyaya müraciət edir.
+    Meta — Meta kataloq, role yaradıcısnın müəllif hüquqları barədə məlumatları özündə cəmləşdirir. Bundan əlavə meta kataloqda cari role-un asılılıqları barədə məlumatlar, o cümlədən, rolun icrası üçün tələb ola biləcək digər role haqqında məlumat əks oluna bilər. Nəzəri təcrübədə bu haqda nümunə göstərəcəyik.
+    ReadME.md — Qeyd formatında olan fayldır. Bu fayl galaxy.ansible.com -da yerləşdirilən role-lar üçün mütləqdir. README.md faylı role haqqında ümumi məlumatı, işləmə prinsipini özündə cəmləşdirir.
+
+Ansible Galaxy — İstifadəyə hazır role-ların axtarışı, yüklənməsi və ya paylaşılması üçün nəzərdə tutulmuş saytdır. GitHub istifadəçiniz vasitəsilə qeydiyyatdan keçməklə, öz role-larınızı paylaşa və Ansible istifadəçiləri üçün əlçatan edə bilərsiniz. Bütün bu əməliiyatlar üçün “ansible-galaxy” komanda interpretatorundan istifadə olunur. Role-lar default olaraq “/etc/ansible/roles” direktoriyasında role adına uyğun olaraq yaradılır. Lakin role-lar üçün nəzərdə tutulmuş direktoriyanı “ansible.cfg” konfiqurasiya faylındakı “roles_path” parametri vasitəsilə və ya komandaya “ — roles-path” parametrindən istifadə etməklə xüsusiləşdirmək mümkündür. “ansible-galaxy install username.role_name” komandası vasitəsilə galaxy-dən ehtiyacımız olan role-u yükləyə bilərik, əgər yüklədiyimiz role-un asılı olduğu başqa role-lar vardırsa bu zaman həmin role-lar da avtomatik olaraq yüklənəcəkdir. Galaxy istifadəsi haqda daha ətraflı məlumat almaq üçün qeyd olunan linkə müraciət etmək olar:
+
+https://docs.ansible.com/ansible/latest/reference_appendices/galaxy.html
