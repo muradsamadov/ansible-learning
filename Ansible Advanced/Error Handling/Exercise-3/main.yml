@@ -1,0 +1,20 @@
+- name: Example
+  become: yes
+  hosts: target-1
+  tasks:
+    - name: install httpd on centos clients
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Demonstrate Handlers
+      copy: 
+        src: /home/murad/Downloads/IT/development-codes/ansible/Ansible Advanced/Error Handling/Exercise-3/index.html
+        dest: /var/www/html
+      notify: httpd_restart
+
+  handlers:
+    - name: httpd_restart
+      service:
+        name: httpd
+        state: restarted

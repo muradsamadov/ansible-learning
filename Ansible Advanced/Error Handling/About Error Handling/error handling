@@ -1,0 +1,59 @@
+1. any_errors_fatal: true  - bu hisse o demekdir ki,  senin taskin 3 hostda icra olunmalidir. Eger birinde nese error vererse butun taski stop elesin. Exercise-1 de gosterilib:
+
+- name: Example
+  hosts: clients
+  any_errors_fatal: true  # eger taskda nese error vererse diger taska kecirilmir ve bu btn hostlara aiddir
+  tasks:
+  tasks:
+    - name: Start Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: yes  
+
+    - name: Copy file with owner and permissions
+      copy:
+        src: /home/murad/Downloads/IT/development-codes/ansible/Ansible Advanced/Error Handling/Exercise-1/test.txt
+        dest: /tmp/
+
+2. ignore_errors: yes  - bu hisse ise senin taskinda hansisa hissede error verse skip et ve kec obiri taska davam ele:
+
+- name: Example
+  hosts: clients
+  tasks:
+    - name: Start Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: yes  
+      ignore_errors: yes  # bu komanda ile eger task her hansisa hostda error vererse onda bu task hemin host ucun ignore olur. Kecir novbeti taska. Bu yalniz error verern hosta samil olunur
+
+    - name: Copy file with owner and permissions
+      copy:
+        src: /home/murad/Downloads/IT/development-codes/ansible/Ansible Advanced/Error Handling/Exercise-1/test.txt
+        dest: /tmp/
+      
+3. Handlers — Ansible-da handlers icraedicilər kimi iştirak edən moduldur. Task-lar tapşırıları yerinə yetirimək üçün istifadə olunan üsuldur, icraedicilər isə tapşırıqlar bitdikdən sonra müraciət olunan tapşırıqlardır. Sadə dildə desək, siz bir tapşırıq yazırsınız, tapşırığın icrası bitdikdən sonra hər hansı servisi restart etmək lazımdır. Bu zaman həmin servisin restartını handlers vasitəsilə icra edirsiniz. Əslində handlers etdiyini, əlavə task ilə də etmək olar, lakin əgər playbook daxilində bir neçə dəfə eyni əməliyyatı icra etmək gərəyi vardırsa, bu məsələni handlers vasitəsilə sadələşdirmək olar. Prosedur belədir: “handlers” modulu vasitəsilə tapşırıq yazılır, bundan sonra istənilən tapşırığın sonunda “notify” parametri vasitəsilə daha öncə yazdığımız “handler” parametrinə təyin etdiyimiz ad qeyd olunur. Nəticədə ansible handler modulundakı tapşırığı yerinə yetirir. Praktiki misala baxaq, tutaq ki, siz 2 klient hostda httpd servisini quraşdırmalızınız və start etməlisiniz. Bundan sonra klientlərdən 1də(həmin klienti when: parametri vasitəsilə təyin edəcəyik) public.html faylını yeniləməlisiniz. Təbii ki faylın konfigləri tətbiq etmək üçün httpd servisə yenidən restart tələb olunacaqdır ki, bu hissədə handler-dən istifadə edəcəyik. Playbooka baxaq:
+
+- name: Example
+  become: yes
+  hosts: target-1
+  tasks:
+    - name: install httpd on centos clients
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Demonstrate Handlers
+      copy: 
+        src: /home/murad/Downloads/IT/development-codes/ansible/Ansible Advanced/Error Handling/Exercise-3/index.html
+        dest: /var/www/html
+      notify: httpd_restart
+
+  handlers:
+    - name: httpd_restart
+      service:
+        name: httpd
+        state: restarted
+
+Hər iki klient hostda httpd install etdik, “when:” parametri vasitəsilə facts-dan əldə olunmuş dəyişən qiymətini təyin edərək yalnız client1 hostuna index.html faylını yükləyirik. 

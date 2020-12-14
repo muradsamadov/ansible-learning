@@ -1,0 +1,14 @@
+- name: Example
+  hosts: clients
+  any_errors_fatal: true  # eger taskda nese error vererse diger taska kecirilmir ve bu btn hostlara aiddir
+  tasks:
+    - name: Start Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: yes  
+
+    - name: Copy file with owner and permissions
+      copy:
+        src: /home/murad/Downloads/IT/development-codes/ansible/Ansible Advanced/Error Handling/Exercise-1/test.txt
+        dest: /tmp/

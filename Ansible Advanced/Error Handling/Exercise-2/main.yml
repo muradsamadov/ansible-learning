@@ -1,0 +1,15 @@
+- name: Example
+  hosts: clients
+  tasks:
+    - name: Start Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: yes  
+      ignore_errors: yes  # bu komanda ile eger task her hansisa hostda error vererse onda bu task hemin host ucun ignore olur. Kecir novbeti taska. Bu yalniz error verern hosta samil olunur
+
+    - name: Copy file with owner and permissions
+      copy:
+        src: /home/murad/Downloads/IT/development-codes/ansible/Ansible Advanced/Error Handling/Exercise-1/test.txt
+        dest: /tmp/
+      
