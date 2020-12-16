@@ -24,10 +24,8 @@
     customization:
       domain: "{{ guest_domain_name }}"
       dns_servers:
-        - "{{ guest_dns_server_1 }}"
-        - "{{ guest_dns_server_2 }}"
+        - "{{ guest_dns_server }}"
       hostname: "{{ guest_hostname }}"
-      password: "{{ guest_password }}"
       ignore_errors: yes
     hardware:
       memory: "{{ guest_memory }}"
