@@ -1,33 +1,25 @@
 # Infrastructure
-# - Defines the vCenter / vSphere environment
-deploy_vsphere_host: 'vcsa01-z67.sddc.lab'
-deploy_vsphere_user: 'administrator@vsphere.local'
-deploy_vsphere_password: 'VMware1!'
-deploy_vsphere_datacenter: 'MGMT-Z67'
-deploy_vsphere_folder: '/ansible'
-deploy_vsphere_cluster: 'CL01-Z67'
-deploy_vsphere_resourcepool: 'RP01'
+vsphere_host: 10.10.45.104
+vsphere_user: administrator@test.local
+vsphere_password: Aa1214~!@~!@
+esxhost: 10.10.45.20
+vsphere_datacenter: TEST ISBIS
+vsphere_folder: /vm
+vm_name: newvm-1
 
 # Guest
-# - Describes virtual machine common options
-guest_network: 'PG-10.67.31.0'
-guest_netmask: '255.255.255.0'
-guest_gateway: '10.67.31.254'
-guest_dns_server: '10.67.10.5'
-guest_domain_name: 'sddc.lab'
-guest_id: 'ubuntu64Guest'
-guest_memory: '1024'
-guest_vcpu: '1'
-guest_template: 'packer-ubuntu-18.04'
-
-# Infrastructure
-    vcenter_hostname: 10.10.45.104
-    vcenter_user: administrator@test.local
-    vcenter_pass: Aa1214~!@~!@
-    esxhost: 10.10.45.20
-    datacenter: TEST ISBIS
-    datastore: DATARaid5
-    vmtemplate: centos7-template-vm
-    name: newvm-1
-
-# Guest
+guest_disk_size: 16gb
+guest_disk_type: eagerzeroedthick
+guest_datastore: DATARaid5
+guest_network: VM Network
+guest_ip: 10.10.45.201
+guest_netmask: 255.255.255.0
+guest_gateway: 10.10.45.254
+guest_type: static
+guest_domain_name: test.local
+guest_dns_server_1: 8.8.8.8
+guest_dns_server_2: 8.8.4.4
+guest_memory: 1gb
+guest_vcpu: 1
+guest_id: centos64Guest
+vmtemplate: centos7-template-vm
