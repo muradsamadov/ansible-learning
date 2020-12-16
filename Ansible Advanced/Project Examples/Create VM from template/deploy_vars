@@ -19,6 +19,8 @@ guest_type: static
 guest_domain_name: test.local
 guest_dns_server_1: 8.8.8.8
 guest_dns_server_2: 8.8.4.4
+guest_hostname: murad-hostname
+guest_password: password
 guest_memory: 1gb
 guest_vcpu: 1
 guest_id: centos64Guest

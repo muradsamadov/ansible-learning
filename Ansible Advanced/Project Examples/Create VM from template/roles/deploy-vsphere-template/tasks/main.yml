@@ -26,6 +26,9 @@
       dns_servers:
         - "{{ guest_dns_server_1 }}"
         - "{{ guest_dns_server_2 }}"
+      hostname: "{{ guest_hostname }}"
+      password: "{{ guest_password }}"
+      ignore_errors: yes
     hardware:
       memory: "{{ guest_memory }}"
       num_cpus: "{{ guest_vcpu }}"
