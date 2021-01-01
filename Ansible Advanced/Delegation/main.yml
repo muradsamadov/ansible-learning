@@ -1,0 +1,20 @@
+- name: Play to perform delegation
+  hosts: all
+  tasks:
+
+    - name: Get the hostname of client host
+      command: hostname
+      register: clienthost_output
+
+    - name: Print the output of client host command
+      debug:
+        msg: This is the output from {{ clienthost_output.stdout }}
+
+    - name: Get the output from localhost
+      command: hostname
+      delegate_to: localhost
+      register: localhost_output
+
+    - name: Print the output from localhost
+      debug:
+        msg: This is the output from {{ localhost_output.stdout }}

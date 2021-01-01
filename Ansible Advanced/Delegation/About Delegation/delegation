@@ -1,0 +1,1 @@
+Delegation  -- taski istediyin host uzerinde icra etmek ucun istifade olunur. Sadece olaraq delegate_to modulunda tanimladirsan hostu ve task yalniz hemin tanimlanan host uzerinde icra olunur
